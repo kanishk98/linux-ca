@@ -4,7 +4,7 @@
   "description": "Easily get system root certificates on Linux machines.",
   "main": "index.js",
   "scripts": {
-  	"pretty": "prettier --write ./src/**/*.js",
+    "pretty": "prettier --write ./src/**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/kanishk98/linux-ca/issues"
   },
-  "homepage": "https://github.com/kanishk98/linux-ca#readme"
+  "homepage": "https://github.com/kanishk98/linux-ca#readme",
+  "dependencies": {
+    "node-forge": "^0.9.1"
+  }
 }
