@@ -1,4 +1,5 @@
 const fs = require("fs");
+const https = require("https");
 
 const { paths } = require("../res/linux-cert-stores.json");
 const splitPattern = /(?=-----BEGIN\sCERTIFICATE-----)/g;
@@ -7,8 +8,8 @@ const noCertsError = new Error(
 );
 
 const getAllCerts = (onData, onError, readSync = false) => {
-  // TODO: Include https module certs here too
-  const certs = [];
+  const certs = (https.globalAgent.options.ca =
+    https.globalAgent.options.ca || []);
   if (readSync) {
     for (const path of paths) {
       try {
