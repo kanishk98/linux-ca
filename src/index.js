@@ -23,13 +23,19 @@ const getAllCerts = (readSync = false) => {
             reject(err);
           }
         }
+      reject(noCertsError);
     } else {
+      let rejectedPaths = 0;
       for (const path of paths) {
         fs.readFile(path, "utf-8", (err, file) => {
           if (err) {
             if (err.code !== "ENOENT") {
               reject(err);
             }
+            if (rejectedPaths === paths.length) {
+              reject(noCertsError);
+            }
+            ++rejectedPaths;
           } else {
             certs.push(file.split(splitPattern).map(cert => cert));
             resolve(certs);
@@ -37,7 +43,6 @@ const getAllCerts = (readSync = false) => {
         });
       }
     }
-    reject(noCertsError);
   });
 };
 
@@ -66,21 +71,13 @@ const getCertsBySubject = (
   readSync = false,
   equalityMethod = defaultEqualityMethod
 ) => {
-  return new Promise((resolve, reject) => {
-    getAllCerts(
-      async data => {
-        try {
-          const filteredCerts = await onDataPromise(data, subject);
-          resolve(filteredCerts);
-        } catch (err) {
-          reject(err);
-        }
-      },
-      err => {
-        console.error(err);
-      },
-      readSync
-    );
+  return new Promise(async (resolve, reject) => {
+    try {
+      const certs = await getAllCerts(readSync);
+      resolve(await onDataPromise(certs, subject));
+    } catch (err) {
+      reject(err);
+    }
   });
 };
 
