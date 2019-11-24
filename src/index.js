@@ -1,3 +1,4 @@
+const es = require("event-stream");
 const fs = require("fs");
 const https = require("https");
 const { certToPem, pemToCert, defaultFilter } = require("./utils");
@@ -68,6 +69,33 @@ const getFilteredCerts = (subject, readSync = false) => {
   });
 };
 
-const streamAllCerts = (onData, onError) => {};
+const streamAllCerts = () => {
+  let breakFlag = false;
+  for (const path of paths) {
+    if (breakFlag) {
+      break;
+    }
+    const stream = fs.createReadStream(path, { encoding: "utf-8" });
+    stream.on("error", err => {
+      if (err.code !== "ENOENT") {
+        console.error(err);
+      }
+    });
+    stream
+      .pipe(es.split(splitPattern))
+      .pipe(
+        es.mapSync(line => {
+          console.log(line);
+        })
+      )
+      .on("error", err => {
+        console.error(err);
+      })
+      .on("end", () => {
+        console.log("Finished reading the entire file.");
+        breakFlag = true;
+      });
+  }
+};
 
-module.exports = { getAllCerts, getFilteredCerts };
+module.exports = { getAllCerts, getFilteredCerts, streamAllCerts };

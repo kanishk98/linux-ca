@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/kanishk98/linux-ca#readme",
   "dependencies": {
+    "event-stream": "^4.0.1",
     "node-forge": "^0.9.1"
   }
 }
