@@ -1,6 +1,6 @@
 const fs = require("fs");
 const https = require("https");
-const { certToPem, pemToCert, defaultEqualityMethod } = require("./utils");
+const { certToPem, pemToCert, defaultFilter } = require("./utils");
 
 const { paths } = require("../res/linux-cert-stores.json");
 const splitPattern = /(?=-----BEGIN\sCERTIFICATE-----)/g;
@@ -46,31 +46,18 @@ const getAllCerts = (readSync = false) => {
   });
 };
 
-const onDataPromise = (data, subject) => {
+const onDataPromise = (data, filterAttribute, filterMethod = defaultFilter) => {
   return new Promise((resolve, reject) => {
     try {
-      let certs = data.map(pem => pemToCert(pem));
-      const filteredCerts = [];
-      for (const cert of certs) {
-        const certSubject = cert.subject.attributes
-          .map(attribute => [attribute.shortName, attribute.value].join("="))
-          .join(", ");
-        if (defaultEqualityMethod(certSubject, subject)) {
-          filteredCerts.push(certToPem(cert));
-        }
-      }
-      resolve(filteredCerts);
+      const certs = data.map(pem => pemToCert(pem));
+      resolve(certs.filter(cert => filterMethod(cert, filterAttribute)));
     } catch (err) {
       reject(err);
     }
   });
 };
 
-const getCertsBySubject = (
-  subject,
-  readSync = false,
-  equalityMethod = defaultEqualityMethod
-) => {
+const getCertsBySubject = (subject, readSync = false) => {
   return new Promise(async (resolve, reject) => {
     try {
       const certs = await getAllCerts(readSync);
