@@ -2,7 +2,7 @@
   "name": "linux-ca",
   "version": "1.0.0",
   "description": "Easily get system root certificates on Linux machines.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "pretty": "prettier --write ./src/**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
