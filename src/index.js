@@ -46,7 +46,7 @@ const getAllCerts = (readSync = false) => {
   });
 };
 
-const onDataPromise = (data, filterAttribute, filterMethod = defaultFilter) => {
+const filterCerts = (data, filterAttribute, filterMethod = defaultFilter) => {
   return new Promise((resolve, reject) => {
     try {
       const certs = data.map(pem => pemToCert(pem));
@@ -57,11 +57,11 @@ const onDataPromise = (data, filterAttribute, filterMethod = defaultFilter) => {
   });
 };
 
-const getCertsBySubject = (subject, readSync = false) => {
+const getFilteredCerts = (subject, readSync = false) => {
   return new Promise(async (resolve, reject) => {
     try {
       const certs = await getAllCerts(readSync);
-      resolve(await onDataPromise(certs, subject));
+      resolve(await filterCerts(certs, subject));
     } catch (err) {
       reject(err);
     }
@@ -70,4 +70,4 @@ const getCertsBySubject = (subject, readSync = false) => {
 
 const streamAllCerts = (onData, onError) => {};
 
-module.exports = { getAllCerts, getCertsBySubject };
+module.exports = { getAllCerts, getFilteredCerts };
