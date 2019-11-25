@@ -69,7 +69,7 @@ const getFilteredCerts = (filterAttribute, filterMethod = defaultFilter, readSyn
   });
 };
 
-const streamAllCerts = (onDataMethod, filterMethod, readSync = false) => {
+const streamCerts = (onDataMethod, filterMethod, readSync = false) => {
   let breakFlag = false;
   for (const path of paths) {
     if (breakFlag) {
@@ -108,4 +108,4 @@ const streamAllCerts = (onDataMethod, filterMethod, readSync = false) => {
   }
 };
 
-module.exports = { getAllCerts, getFilteredCerts, streamAllCerts };
+module.exports = { getAllCerts, getFilteredCerts, streamCerts };
