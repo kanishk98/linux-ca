@@ -69,7 +69,7 @@ const getFilteredCerts = (subject, readSync = false) => {
   });
 };
 
-const streamAllCerts = filterMethod => {
+const streamAllCerts = (filterMethod, readSync = false) => {
   let breakFlag = false;
   for (const path of paths) {
     if (breakFlag) {
@@ -81,10 +81,11 @@ const streamAllCerts = filterMethod => {
         console.error(err);
       }
     });
+    const mappingFunction = readSync ? es.mapSync : es.map;
     stream
       .pipe(es.split(splitPattern))
       .pipe(
-        es.map((data, callback) => {
+        mappingFunction((data, callback) => {
           if (filterMethod) {
             if (!filterMethod(data)) {
               // filter not passed, drop this data
