@@ -69,7 +69,7 @@ const getFilteredCerts = (subject, readSync = false) => {
   });
 };
 
-const streamAllCerts = (filterMethod, readSync = false) => {
+const streamAllCerts = (onDataMethod, filterMethod, readSync = false) => {
   let breakFlag = false;
   for (const path of paths) {
     if (breakFlag) {
@@ -92,6 +92,8 @@ const streamAllCerts = (filterMethod, readSync = false) => {
               callback();
             }
           }
+          onDataMethod(data);
+
           // if callback is not called, then map thinks the stream is still being processed
           callback(null, data);
         })
