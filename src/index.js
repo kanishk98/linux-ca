@@ -84,8 +84,10 @@ const streamAllCerts = () => {
     stream
       .pipe(es.split(splitPattern))
       .pipe(
-        es.mapSync(line => {
-          console.log(line);
+        es.map((data, callback) => {
+          console.log(data);
+          // if callback is not called, then map thinks the stream is still being processed
+          callback(null, data);
         })
       )
       .on("error", err => {
