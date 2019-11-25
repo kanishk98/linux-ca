@@ -69,7 +69,7 @@ const getFilteredCerts = (subject, readSync = false) => {
   });
 };
 
-const streamAllCerts = () => {
+const streamAllCerts = filterMethod => {
   let breakFlag = false;
   for (const path of paths) {
     if (breakFlag) {
@@ -85,7 +85,12 @@ const streamAllCerts = () => {
       .pipe(es.split(splitPattern))
       .pipe(
         es.map((data, callback) => {
-          console.log(data);
+          if (filterMethod) {
+            if (!filterMethod(data)) {
+              // filter not passed, drop this data
+              callback();
+            }
+          }
           // if callback is not called, then map thinks the stream is still being processed
           callback(null, data);
         })
