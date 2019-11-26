@@ -1,3 +1,6 @@
+# .crt file, just ignoring this for the sake of it
+test.crt
+
 # Ignoring package-lock.json since this is package is meant for publishing, not as an app
 package-lock.json
 
