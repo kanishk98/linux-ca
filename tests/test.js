@@ -1,13 +1,14 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
+const { getAllCerts } = require("../src/index");
 
 const { paths } = require(path.resolve(
   __dirname,
   "./../res/linux-cert-stores.json"
 ));
 const testingPath = JSON.stringify({
-  paths: ["~/Documents/GitHub/linux-ca/res/test.crt"]
+  paths: ["./../res/test.crt"]
 });
 
 let fileOpsFlag = false;
@@ -25,4 +26,13 @@ try {
 
 it("Should have performed file ops without exceptions.", () => {
   assert.equal(fileOpsFlag, true);
+});
+
+it("readSync should provide correct cert count", async () => {
+  try {
+    const certs = await getAllCerts(true);
+    assert.equal(certs.length, 1);
+  } catch (err) {
+    console.error(err);
+  }
 });

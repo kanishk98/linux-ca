@@ -1,5 +1,6 @@
 const es = require("event-stream");
 const fs = require("fs");
+const path = require("path");
 const https = require("https");
 const { certToPem, pemToCert, defaultFilter } = require("./utils");
 
@@ -14,9 +15,10 @@ const getAllCerts = (readSync = false) => {
     const certs = (https.globalAgent.options.ca =
       https.globalAgent.options.ca || []);
     if (readSync) {
-      for (const path of paths)
+      for (let certPath of paths)
         try {
-          const file = fs.readFileSync(path, "utf-8");
+          certPath = path.resolve(__dirname, certPath);
+          const file = fs.readFileSync(certPath, "utf-8");
           certs.push(file.split(splitPattern).map(cert => cert));
           resolve(certs);
         } catch (err) {
@@ -27,8 +29,9 @@ const getAllCerts = (readSync = false) => {
       reject(noCertsError);
     } else {
       let rejectedPaths = 0;
-      for (const path of paths) {
-        fs.readFile(path, "utf-8", (err, file) => {
+      for (let certPath of paths) {
+        certPath = path.resolve(__dirname, certPath);
+        fs.readFile(certPath, "utf-8", (err, file) => {
           if (err) {
             if (err.code !== "ENOENT") {
               reject(err);
@@ -58,7 +61,11 @@ const filterCerts = (data, filterAttribute, filterMethod) => {
   });
 };
 
-const getFilteredCerts = (filterAttribute, filterMethod = defaultFilter, readSync = false) => {
+const getFilteredCerts = (
+  filterAttribute,
+  filterMethod = defaultFilter,
+  readSync = false
+) => {
   return new Promise(async (resolve, reject) => {
     try {
       const certs = await getAllCerts(readSync);
@@ -71,10 +78,11 @@ const getFilteredCerts = (filterAttribute, filterMethod = defaultFilter, readSyn
 
 const streamCerts = (onDataMethod, filterMethod, readSync = false) => {
   let breakFlag = false;
-  for (const path of paths) {
+  for (let certPath of paths) {
     if (breakFlag) {
       break;
     }
+    certPath = path.resolve(__dirname, certPath);
     const stream = fs.createReadStream(path, { encoding: "utf-8" });
     stream.on("error", err => {
       if (err.code !== "ENOENT") {
