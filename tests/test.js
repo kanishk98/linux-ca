@@ -36,3 +36,12 @@ it("readSync should provide correct cert count", async () => {
     console.error(err);
   }
 });
+
+it("reading in async mode should provide correct cert count", async () => {
+  try {
+    const certs = await getAllCerts();
+    assert.equal(certs.length, 1);
+  } catch (err) {
+    console.error(err);
+  }
+});
