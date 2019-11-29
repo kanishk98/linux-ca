@@ -1,7 +1,7 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
-const { getAllCerts } = require("../src/index");
+const { getAllCerts, getFilteredCerts } = require("../src/index");
 
 const { paths } = require(path.resolve(
   __dirname,
@@ -45,3 +45,17 @@ it("reading in async mode should provide correct cert count", async () => {
     console.error(err);
   }
 });
+
+it("should filter out certificate", async () => {
+  try {
+    const certs = await getFilteredCerts("github");
+    assert.equal(certs.length, 0);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+it ("should filter in certificate", async () => {
+  const certs = await getFilteredCerts("abhigyank.zulipdev.org");
+  assert.equal(certs.length, 1);
+})
