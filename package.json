@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "pretty": "prettier --write ./src/**/*.js ./tests/**/*.js",
-    "test": "mocha tests"
+    "test": "mocha tests/prep.js && mocha tests/test.js"
   },
   "repository": {
     "type": "git",
