@@ -11,51 +11,31 @@ const testingPath = JSON.stringify({
   paths: ["./../res/test.crt"]
 });
 
-let fileOpsFlag = false;
-
-try {
+it("Should have performed file ops without exceptions.", () => {
   const filePath = path.resolve(__dirname, "./../res/linux-cert-stores.json");
   fs.unlinkSync(filePath);
   fs.writeFileSync(filePath, testingPath, {
     encoding: "utf-8"
   });
-  fileOpsFlag = true;
-} catch (err) {
-  console.error(err);
-}
-
-it("Should have performed file ops without exceptions.", () => {
-  assert.equal(fileOpsFlag, true);
+  assert.equal(0, 0);
 });
 
 it("readSync should provide correct cert count", async () => {
-  try {
-    const certs = await getAllCerts(true);
-    assert.equal(certs.length, 1);
-  } catch (err) {
-    console.error(err);
-  }
+  const certs = await getAllCerts(true);
+  assert.equal(certs.length, 1);
 });
 
 it("reading in async mode should provide correct cert count", async () => {
-  try {
-    const certs = await getAllCerts();
-    assert.equal(certs.length, 1);
-  } catch (err) {
-    console.error(err);
-  }
+  const certs = await getAllCerts();
+  assert.equal(certs.length, 1);
 });
 
 it("should filter out certificate", async () => {
-  try {
-    const certs = await getFilteredCerts("github");
-    assert.equal(certs.length, 0);
-  } catch (err) {
-    console.error(err);
-  }
+  const certs = await getFilteredCerts("github");
+  assert.equal(certs.length, 0);
 });
 
-it ("should filter in certificate", async () => {
+it("should filter in certificate", async () => {
   const certs = await getFilteredCerts("abhigyank.zulipdev.org");
   assert.equal(certs.length, 1);
-})
+});
