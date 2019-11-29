@@ -12,8 +12,7 @@ const noCertsError = new Error(
 
 const getAllCerts = (readSync = false) => {
   return new Promise((resolve, reject) => {
-    const certs = (https.globalAgent.options.ca =
-      https.globalAgent.options.ca || []);
+    const certs = [];
     if (readSync) {
       for (let certPath of paths)
         try {
