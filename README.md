@@ -1,6 +1,12 @@
 # linux-ca
 Easily get system root certificates on Linux machines.
 
+## Installation
+
+```sh
+npm install --save linux-ca
+```
+
 If you've tried to install an SSL certificate on your machine and were puzzled when your Node.js app didn't pick up on that when making an HTTPS request, this is why:
 
 > Node uses a
