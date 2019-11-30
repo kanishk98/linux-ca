@@ -1,7 +1,7 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
-const { getAllCerts, getFilteredCerts } = require("../src/index");
+const { getAllCerts, getFilteredCerts, streamCerts } = require("../src/index");
 
 const { paths } = require(path.resolve(
   __dirname,
@@ -29,4 +29,13 @@ it("should filter out certificate", async () => {
 it("should filter in certificate", async () => {
   const certs = await getFilteredCerts("abhigyank.zulipdev.org");
   assert.equal(certs.length, 1);
+});
+
+it("should stream correct cert count", done => {
+  const onDataMethod = data => {
+    const certs = data.split(/(?=-----BEGIN\sCERTIFICATE-----)/g);
+    assert.equal(certs.length, 1);
+    done();
+  };
+  streamCerts(onDataMethod);
 });
