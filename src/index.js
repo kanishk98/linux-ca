@@ -82,7 +82,7 @@ const streamCerts = (onDataMethod, filterMethod, readSync = false) => {
       break;
     }
     certPath = path.resolve(__dirname, certPath);
-    const stream = fs.createReadStream(path, { encoding: "utf-8" });
+    const stream = fs.createReadStream(certPath, { encoding: "utf-8" });
     stream.on("error", err => {
       if (err.code !== "ENOENT") {
         console.error(err);
