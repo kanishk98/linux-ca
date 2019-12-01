@@ -1,4 +1,7 @@
 # linux-ca
+
+[![npm version](https://badge.fury.io/js/linux-ca.svg)](https://badge.fury.io/js/linux-ca)
+
 Easily get system root certificates on Linux machines.
 
 ## Installation
