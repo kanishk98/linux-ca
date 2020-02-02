@@ -50,7 +50,7 @@ If you prefer to filter out some certificates instead, you need to provide a fil
 The example below shows the default filter method and you can simply swap it in with yours:
 
 ```js
-const { filteredCerts } = require("linux-ca");
+const { getFilteredCerts } = require("linux-ca");
 
 // example of a filtering method that returns true if cert should be included in filtered list
 // it returns false otherwise
@@ -72,6 +72,7 @@ const defaultFilter = (cert, subject) => {
 // I figured it might make using the module easier for a few users, but feel free to pass along null
 // it's only used in the filterMethod method, so you can customise that as you like
 
+// defaultFilter is optional and set to the above method by default
 // readSync is optional and false by default
 // if you set it to true, the certs will be read synchronously
 getFilteredCerts("google.com", defaultFilter, readSync).then(filteredCerts => {
