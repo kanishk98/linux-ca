@@ -18,7 +18,7 @@ const getAllCerts = (readSync = false) => {
         try {
           certPath = path.resolve(__dirname, certPath);
           const file = fs.readFileSync(certPath, "utf-8");
-          certs.push(file.split(splitPattern).map(cert => cert));
+          certs.push(...file.split(splitPattern).map(cert => cert));
           resolve(certs);
         } catch (err) {
           if (err.code !== "ENOENT") {
@@ -40,7 +40,7 @@ const getAllCerts = (readSync = false) => {
             }
             ++rejectedPaths;
           } else {
-            certs.push(file.split(splitPattern).map(cert => cert));
+            certs.push(...file.split(splitPattern).map(cert => cert));
             resolve(certs);
           }
         });
