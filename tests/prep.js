@@ -7,7 +7,7 @@ const { paths } = require(path.resolve(
   "./../res/linux-cert-stores.json"
 ));
 const testingPath = JSON.stringify({
-  paths: ["./../res/test.crt"]
+  paths: ["./../res/test.crt"],
 });
 
 it("Should have performed file ops without exceptions.", () => {
@@ -15,7 +15,7 @@ it("Should have performed file ops without exceptions.", () => {
     const filePath = path.resolve(__dirname, "./../res/linux-cert-stores.json");
     fs.unlinkSync(filePath);
     fs.writeFileSync(filePath, testingPath, {
-      encoding: "utf-8"
+      encoding: "utf-8",
     });
     assert.equal(0, 0);
   } catch (err) {

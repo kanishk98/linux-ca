@@ -1,7 +1,7 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
-const sinon = require('sinon');
+const sinon = require("sinon");
 const child_process = require("child_process");
 const { getAllCerts, getFilteredCerts, streamCerts } = require("../src/index");
 
@@ -10,7 +10,7 @@ const { paths } = require(path.resolve(
   "./../res/linux-cert-stores.json"
 ));
 const testingPath = JSON.stringify({
-  paths: ["./../res/test.crt"]
+  paths: ["./../res/test.crt"],
 });
 
 let execSync = undefined;
@@ -33,7 +33,10 @@ it("readSync provides correct cert count", async () => {
   const certs = await getAllCerts(true);
 
   assert.equal(certs.length, 1);
-  assert.equal(execSync.getCall(0).args[0], 'p11tool --only-urls --batch --list-all-trusted pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=System%20Trust');
+  assert.equal(
+    execSync.getCall(0).args[0],
+    "p11tool --only-urls --batch --list-all-trusted pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=System%20Trust"
+  );
   assert.equal(execSync.getCall(1).args[0], 'p11tool --export "someURL"');
 });
 
@@ -44,7 +47,10 @@ it("reading in async mode provides correct cert count", async () => {
   const certs = await getAllCerts();
 
   assert.equal(certs.length, 1);
-  assert.equal(exec.getCall(0).args[0], 'p11tool --only-urls --batch --list-all-trusted pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=System%20Trust');
+  assert.equal(
+    exec.getCall(0).args[0],
+    "p11tool --only-urls --batch --list-all-trusted pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=System%20Trust"
+  );
   assert.equal(execSync.getCall(0).args[0], 'p11tool --export "someURL"');
 });
 
@@ -77,8 +83,8 @@ it("filters in certificate", async () => {
   assert.equal(certs.length, 1);
 });
 
-it("should stream correct cert count", done => {
-  const onDataMethod = data => {
+it("should stream correct cert count", (done) => {
+  const onDataMethod = (data) => {
     const certs = data.split(/(?=-----BEGIN\sCERTIFICATE-----)/g);
     assert.equal(certs.length, 1);
     done();

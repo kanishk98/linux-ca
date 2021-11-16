@@ -62,7 +62,9 @@ const getAllCerts = (readSync = false) => {
               stdout.split(EOL).map(async (line) => {
                 if (line) {
                   certs.push(
-                    child_process.execSync(`p11tool --export "${line}"`, { encoding: "utf8" })
+                    child_process.execSync(`p11tool --export "${line}"`, {
+                      encoding: "utf8",
+                    })
                   );
                 }
               })
@@ -71,7 +73,7 @@ const getAllCerts = (readSync = false) => {
               throw noCertsError;
             }
             resolve(certs);
-          }  catch (err) {
+          } catch (err) {
             let rejectedPaths = 0;
             for (let certPath of paths) {
               certPath = path.resolve(__dirname, certPath);
