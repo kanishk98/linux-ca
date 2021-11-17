@@ -1,6 +1,6 @@
 {
   "name": "linux-ca",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "description": "Easily get system root certificates on Linux machines.",
   "main": "src/index.js",
   "scripts": {
